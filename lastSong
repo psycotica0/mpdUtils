@@ -1,0 +1,10 @@
+#!/bin/sh
+
+SongTitle="$(mpc current)"
+
+while [ "$(mpc current)" = "$SongTitle" ]; do
+	# Wait until a song other than the one that was playing when we were started is playing
+	mpc idle
+done;
+
+mpc pause

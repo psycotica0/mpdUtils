@@ -1,0 +1,3 @@
+#!/bin/sh
+
+mpc playlist | sed -n '/^>/s/^>\([[:digit:]]*\)).*/\1/p'

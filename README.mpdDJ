@@ -1,0 +1,47 @@
+This is a script that is intended to replicate the iTunesDJ playlist which I really liked.
+Now, though, with mpd, it's even better!
+
+It uses my "pick" utility (http://github.com/psycotica0/Pick), or another with the same functionality and interface.
+
+The way it works it this:
+
+When I want to activate this mode I run "mpdDJ".
+This is a tool that runs and moniters the playlist.
+When a song is finished playing it is removed from the playlist, and the playlist is meant to always have a certain number of items in it.
+
+When there aren't enough songs in the playlist, one is randomly chosen from the library and put on the end of the list.
+
+The options that can be given as "mpdDJ Upcoming Recent"
+The defaults from this is Recent=0, Upcoming=20.
+
+These control the parameters for the DJ playlist.
+The number in Recent is how many songs before the current song are kept on the playlist, with 0 being "Remove the song as soon as it's done playing"
+
+The number in Upcoming is how many songs should be on the list for after the current track. 0 probably doesn't work well here, but 1 would be only the next song.
+
+Upcoming is replenished when the upcoming number is less than Upcoming only. If there are more, the surplus is not removed.
+Recent is only removed when there are over Recent entries, nothing is done when there are less.
+
+So, for example: let's say there's a library of songs 1-10.
+If we run `mpdDJ 5 1`
+It might give us:
+> Song1
+Song2
+Song3
+Song4
+Song5
+Song6
+
+Then, once Song1 is over, it will still leave Song1 on the list and add Song7 on the end.
+After Song2 is over, it moves on to Song3, it leaves Song2 on the list, but removes Song1, and adds Song8.
+At this point the playlist looks like:
+Song2
+>Song3
+Song4
+Song5
+Song6
+Song7
+Song8
+
+If you give a "-v" as the first option, then it runs in Verbose mode.
+In this mode it tells you what songs it deletes, and which it adds, on stdout.

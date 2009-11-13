@@ -1,0 +1,45 @@
+#!/bin/sh
+
+if [ "$1" = "-v" ]; then
+	# Verbose mode reports what it's doing.
+	verbose="1"
+	shift;
+fi
+
+Upcoming="$1"
+Recent="$2"
+
+if [ -z "$Upcoming" ]; then
+	Upcoming="20"
+fi
+
+if [ -z "$Recent" ]; then
+	Recent="0"
+fi
+
+while true; do
+	# Wait for something to happen
+	mpc idle > /dev/null
+	CurrentSong="$(mpdCurrentSong)"
+	TotalNum="$(mpc playlist | wc -l)"
+	Before="$(expr "$CurrentSong" - 1)"
+	After="$(expr "$TotalNum" - "$CurrentSong")"
+
+	if [ "$Before" -gt "$Recent" ]; then
+		for num in $(seq 1 "$(expr "$Before" - "$Recent")"); do
+			if [ -n "$verbose" ]; then
+				echo -n "Deleting: "
+				mpc playlist | head -n 1 | sed 's/^[[:space:]]*[[:digit:]]*)[[:space:]]*//'
+			fi
+			mpc del 1
+		done
+	fi
+
+	if [ "$After" -lt "$Upcoming" ]; then
+			mpc listall | pick "$(expr "$Upcoming" - "$After")" | tee /tmp/mpdDJAdd | mpc add
+			if [ -n "$verbose" ]; then
+				echo "Adding:"
+				cat /tmp/mpdDJAdd
+			fi
+	fi
+done

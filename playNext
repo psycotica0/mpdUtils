@@ -1,0 +1,5 @@
+#!/bin/sh
+
+CurrentSong="$(mpdCurrentSong)"
+mpc add
+mpc move "$(mpc playlist | wc -l)" "$(expr "$CurrentSong" + 1)"

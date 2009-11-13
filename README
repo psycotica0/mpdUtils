@@ -1,0 +1,8 @@
+These are a collection of various apps I wrote to ease some of the tasks I do with mpd.
+
+They are:
+lastSong - This app runs until the song changes, then pauses. Meaning "This is the last song", or "Stop after this one"
+mpdCurrentSong - This is mostly a helper script that just returns the current place in the playlist for other scripts.
+mpdDJ - This maintains the playlist under certain criteria, it is documented in README.mpdDJ
+playNext - This takes in on stdin an input suitable for "mpc add" and makes that song next in the playlist
+playNow - This is basically just playNext, then it plays it. It's used for playing a give song now instead of the current one.
